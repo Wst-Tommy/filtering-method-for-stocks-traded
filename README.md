@@ -1,2 +1,6 @@
 # filtering-method-for-stocks-traded
 C# codes for filtering method applied onto the stocks traded on the United States market, with the software called thinkscript
+
+Investors and fund managers can access various techniques, principles, and mathematical tools to select profitable stocks. However, the challenge is that most modern methods are biased towards current market conditions. As a result, specific mathematical models may not perform well in uncertain situations, such as the aftermath of the 2019 pandemic. In recent years, even fundamental traders have suffered losses due to the unpredictability of today’s markets. It’s important to note that fundamental traders may experience short-term losses. Still, based on historical data and models, they are likely to succeed in the long run, provided they have sufficient capital to withstand the ongoing losses for several years. 
+
+What trading methods have shown continued success, even in recent periods? One such way is to look at stocks with the lowest emotional human traders. We want to reduce human interactions in a particular stock because that would reduce the likelihood of an uncertain future outcome presented at a particular point in time. The codes listed here are the first step in allowing users to filter out undesirable stocks.
