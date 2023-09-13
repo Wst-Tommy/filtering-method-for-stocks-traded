@@ -3,6 +3,9 @@ def ocmin = Min(open, close);
 def difference = ocm - ocmin;
 def bn = BarNumber();
 
+ocm is each day’s maximum value, ocmin is each day’s minimum value, difference represents the area of the candle stick for each day. bn is the bar number; for example, the newest bar is represented as 0, the previous day’s bar is -1
+ThinkScript constantly updates each day’s value, so the 0 bar would constantly shift to the newest value.
+
 input n = 14;
 
 def slope_total;
