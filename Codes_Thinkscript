@@ -1,6 +1,6 @@
-'''These codes below are used to calculate the change in area; it does it via calculating the gradient from bar 0 (newest bar) 
+'''**These codes below are used to calculate the change in area; it does it via calculating the gradient from bar 0 (newest bar) 
 to bar -1 (The second newest bar), then the gradient of bar 0 to bar -2, bar 0 to bar -3, until however many number of days in “n”. 
-The farther away the bar, the lower its weight. The codes ´getvalue(difference[2], i)) / i´ would give a lower weight to larger i values.''' 
+The farther away the bar, the lower its weight. The codes ´getvalue(difference[2], i)) / i´ would give a lower weight to larger i values.**''' 
 
 def ocm = Max(open, close);
 def ocmin = Min(open, close);
@@ -13,6 +13,10 @@ ThinkScript constantly updates each day’s value, so the 0 bar would constantly
 
 input n = 14;
 
+'''Below, we calculate the slope from the midpoint of the bar at position 0 to the midpoint of a bar at position -1, the midpoint at position 0 
+to a bar at position -2, …, all the way to the midpoint of bar 0 to the midpoint of bar -n. From this line, “getvalue(difference[2], i)) / i “, 
+as i increases in value, the denominator would increase, thus giving bars that are farther back in time a lower weight.'''
+
 def slope_total;
 if bn == 1 or bn < n
 then {
@@ -24,19 +28,32 @@ then {
     do p + ( (difference[1] - getvalue(difference[2], i)) / i );
 }
 
+'''The two lines below would return the value as positive by taking the exponential and rescaling the values such that it is in a rage 
+from 0 to 1.'''
+
 def slope_avg = Exp(slope_total / n);
 def rescaled_slope_avg = 1/(1 + Exp(-1*slope_avg));
 
 #---------------------------------------------------------------
 
+'''The codes below calculate the change in the volume of stocks. Our goal is to find a decreasing volume for a particular stock and to 
+do that, I have developed three steps in filtering all the stocks.'''
 
 def length = 30;
+
+'''The first step is to calculate the total average volume over the past 30 days and then calculate the average volume over the 
+interested days; for example, if you are interested in holding the stock for the next 4 days, then calculate the average volume 
+for the past four days.''' 
+
 
 def total_avg_volume = (Sum(volume, length) - Sum(volume, 3))/(length - 3);
 
 def avg_volume = (volume + volume[1] + volume[2] + volume[3] + volume[4])/5;
 
 def avg_volume_1 = (volume + volume[1] + volume[2])/3;
+
+'''The first filtering system works by checking if the average volume over the desired period is lower than the total average volume 
+over the past, for example, 30 days; if it is lower, then return 1; else return 0.'''
 
 def decreasing_volume_check; 
 if avg_volume / total_avg_volume > 1 
@@ -46,6 +63,8 @@ decreasing_volume_check = 0;
 decreasing_volume_check =1;
 }
 
+'''Apply the same gradient calculation method, starting from bar 0 to bar -m, and bars that are farther back in time would be 
+weighted lower. Returning a final result in “slope_avg_2”.'''
 
 input m = 5;
 
@@ -59,7 +78,13 @@ def slope_total_2;
 
 def slope_avg_2 = slope_total / n;
 
+'''So, the first filtering system filters out all the stocks where the average volume in the recent few days is higher than 
+the monthly average; this works by having “decreasing_volume_check” return 0.'''
+
 def volume_difference = decreasing_volume_check * slope_avg_2;
+
+'''Now for the second filtering system, we check to see if the gradient is positive (>1) or negative (<1), if the former is true, 
+then return 0, else return 1.'''
 
 def decreasing_volume_difference_check; 
 if volume_difference > 1 
@@ -68,6 +93,8 @@ decreasing_volume_difference_check = 0;
 } else {
 decreasing_volume_difference_check =1;
 }
+
+'''“volume_difference_2” check the average decrease in volume over the past 3 days.'''
 
 def volume_difference_2 = decreasing_volume_difference_check * (volume_difference - volume_difference[2]) / 3;
 
