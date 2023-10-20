@@ -1,4 +1,4 @@
-<strong>These codes below are used to calculate the change in area; it does it via calculating the gradient from bar 0 (newest bar)</strong> 
+These codes below are used to calculate the change in area; it does it via calculating the gradient from bar 0 (newest bar) 
 to bar -1 (The second newest bar), then the gradient of bar 0 to bar -2, bar 0 to bar -3, until however many number of days in “n”. 
 The farther away the bar, the lower its weight. The codes ´getvalue(difference[2], i)) / i´ would give a lower weight to larger i values. 
 
